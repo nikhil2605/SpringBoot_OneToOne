@@ -1,0 +1,3 @@
+
+#INSERT INTO book VALUES(1,'Bio',350.0,1);
+#INSERT INTO book VALUES(2,'Maths',500.0,2);
