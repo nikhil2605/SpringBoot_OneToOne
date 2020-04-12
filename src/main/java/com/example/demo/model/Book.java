@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Book {
 
@@ -18,6 +20,7 @@ public class Book {
 	private double price;
 
 	@OneToOne
+	//@JsonManagedReference
 	private Author author;
 
 	public Long getId() {

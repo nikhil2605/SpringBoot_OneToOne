@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Author {
 
@@ -23,6 +25,7 @@ public class Author {
 	private String firstName;
 
 	@OneToMany(mappedBy = "author")
+	//@JsonBackReference
 	private List<Book> bookList;
 
 	public Author() {

@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,22 +15,11 @@ import com.example.demo.model.Author;
 import com.example.demo.repository.AuthorRepository;
 
 @RestController
-@RequestMapping(value = "/a")
 public class AuthorController {
 
 	@Autowired
 	private AuthorRepository userRepository;
 
-	@GetMapping(value = "/new")
-	public String saveData() {
-		Author user1 = new Author("ndhiwar63@gmail.com", "Nikhil");
-		userRepository.save(user1);
-
-		Author user2 = new Author("ndhiwar8@gmail.com", "Raj");
-		userRepository.save(user2);
-		return "Author create sucessfully.";
-	}
-	
 	@RequestMapping(value = "/authors", method = RequestMethod.GET)
 	public List<Author> getUsers() {
 		return (List<Author>) userRepository.findAll();
@@ -42,49 +30,50 @@ public class AuthorController {
 		return userRepository.findById(id);
 	}
 	
-	@RequestMapping(value = "/authors",method = RequestMethod.POST)
+
+	@RequestMapping(value = "/authors", method = RequestMethod.POST)
 	public ResponseEntity<Author> createUser(@RequestBody Author newUser) {
 		Author user = userRepository.save(newUser);
-		
-		ResponseEntity<Author> response = new ResponseEntity<Author>(user,HttpStatus.CREATED);
+
+		ResponseEntity<Author> response = new ResponseEntity<Author>(user, HttpStatus.CREATED);
 		return response;
-		
+
 	}
-	
-	@RequestMapping(value = "/authors",method = RequestMethod.PUT)
-	public ResponseEntity<Author> updateUser(@RequestBody Author oldUser) {
+
+	@RequestMapping(value = "/authors/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Author> updateUser(@PathVariable("id") Long id,@RequestBody Author oldUser) {
 		Author user = userRepository.save(oldUser);
-		
-		ResponseEntity<Author> response = new ResponseEntity<Author>(user,HttpStatus.ACCEPTED);
+
+		ResponseEntity<Author> response = new ResponseEntity<Author>(user, HttpStatus.ACCEPTED);
 		return response;
-		
+
 	}
-	
-	@RequestMapping(value = "/authors/{id}",method = RequestMethod.PATCH)
+
+	@RequestMapping(value = "/authors/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Author> patchUser(@PathVariable("id") Long id, @RequestBody Author changeUser) {
 		boolean result = userRepository.existsById(id);
-		Author user=null;
+		Author user = null;
 		ResponseEntity<Author> response = null;
-		if(result == true) {
+		if (result == true) {
 			user = userRepository.save(changeUser);
-			 response = new ResponseEntity<Author>(user,HttpStatus.ACCEPTED);
-		}else {
-			response = new ResponseEntity<Author>(user,HttpStatus.NOT_FOUND);
+			response = new ResponseEntity<Author>(user, HttpStatus.ACCEPTED);
+		} else {
+			response = new ResponseEntity<Author>(user, HttpStatus.NOT_FOUND);
 		}
-		
-		return response;	
+
+		return response;
 	}
-	
-	@RequestMapping(value = "/authors/{id}",method = RequestMethod.DELETE)
+
+	@RequestMapping(value = "/authors/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
 		boolean result = userRepository.existsById(id);
 		ResponseEntity<String> response = null;
-		if(result == true) {
-			userRepository.deleteById(id);			  
-			response =  new ResponseEntity<String>("User Deleted",HttpStatus.ACCEPTED);
-		}else {
-			response = new ResponseEntity<String>("User Not Found",HttpStatus.NOT_FOUND);
-		}		
-		return response;	
+		if (result == true) {
+			userRepository.deleteById(id);
+			response = new ResponseEntity<String>("User Deleted", HttpStatus.ACCEPTED);
+		} else {
+			response = new ResponseEntity<String>("User Not Found", HttpStatus.NOT_FOUND);
+		}
+		return response;
 	}
 }
